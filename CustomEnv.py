@@ -1,10 +1,13 @@
 import gym
-from gym.spaces import Discrete, Dict, Box, Tuple
+from gym.spaces import Discrete, Box
+from PIL import Image
+
+from skimage import transform, img_as_ubyte
 
 import pygame
 import numpy as np
 import gym
-import sys
+
 
 from game import Game
 
@@ -27,7 +30,8 @@ def get_action():
 
 class CustomEnv(gym.Env):
     def __init__(self,env_config={}):
-        self.duration = 0 
+        self.duration = 0
+        self.kills = 0
         self.init_render()
         self.game = Game(screen_width, screen_height)
 
@@ -38,46 +42,10 @@ class CustomEnv(gym.Env):
         #  - 3: SHOOT
         #  - 4: LEFT + SHOOT
         #  - 5: RIGHT + SHOOT
-        self.action_space = Discrete(6)
-        self.observation_space = Box(low=0, high=255, shape=(screen_width, screen_height, 3), dtype=np.uint8)
+        self.action_space = Discrete(3)
 
-        # low_aliens=np.array([[0, 0, 109], [0, 0, 109], [0, 0, 109], [0, 0, 109], [0, 0, 109], [0, 0, 109], 
-        #                     [0, 0, 109], [0, 0, 109], [0, 0, 109],[0, 0, 109], [0, 0, 109],[0, 0, 109], 
-        #                     [0, 0, 109], [0, 0, 109], [0, 0, 109],[0, 0, 109], [0, 0, 109],[0, 0, 109], 
-        #                     [0, 0, 109], [0, 0, 109], [0, 0, 109],[0, 0, 109], [0, 0, 109],[0, 0, 109], 
-        #                     [0, 0, 109], [0, 0, 109], [0, 0, 109],[0, 0, 109], [0, 0, 109],[0, 0, 109], 
-        #                     [0, 0, 109], [0, 0, 109], [0, 0, 109],[0, 0, 109], [0, 0, 109],[0, 0, 109]])
+        self.observation_space = Box(low=0, high=255, shape=(150, 150, 1), dtype=np.uint8)
 
-        # high_aliens=np.array([[1, screen_width, 187], [1, screen_width, 187],[1, screen_width, 187], [1, screen_width, 187], [1, screen_width, 187],[1, screen_width, 187], 
-        #                     [1, screen_width, 187], [1, screen_width, 187],[1, screen_width, 187], [1, screen_width, 187], [1, screen_width, 187],[1, screen_width, 187], 
-        #                     [1, screen_width, 187], [1, screen_width, 187],[1, screen_width, 187], [1, screen_width, 187], [1, screen_width, 187],[1, screen_width, 187], 
-        #                     [1, screen_width, 187], [1, screen_width, 187],[1, screen_width, 187], [1, screen_width, 187], [1, screen_width, 187],[1, screen_width, 187], 
-        #                     [1, screen_width, 187], [1, screen_width, 187],[1, screen_width, 187], [1, screen_width, 187], [1, screen_width, 187],[1, screen_width, 187], 
-        #                     [1, screen_width, 187], [1, screen_width, 187],[1, screen_width, 187], [1, screen_width, 187], [1, screen_width, 187],[1, screen_width, 187]])
-        
-        # low_bosses=np.array([[ 112, -1], [ 112, -1],[ 112, -1], [ 112, -1]])
-        
-        # high_bosses=np.array([[ 336, 1], [ 336, 1],[ 336, 1], [ 336, 1]])
-
-        # low_bullets=np.array([[0, 71], [0, 71], [0, 71], [0, 71], [0, 71],
-        #                      [0, 71], [0, 71], [0, 71], [0, 71], [0, 71],
-        #                      [0, 71], [0, 71], [0, 71], [0, 71], [0, 71]])
-
-        # high_bullets=np.array([[screen_width, screen_height], [screen_width, screen_height], [screen_width, screen_height], [screen_width, screen_height], [screen_width, screen_height],
-        #                       [screen_width, screen_height], [screen_width, screen_height], [screen_width, screen_height], [screen_width, screen_height], [screen_width, screen_height],
-        #                       [screen_width, screen_height], [screen_width, screen_height], [screen_width, screen_height], [screen_width, screen_height], [screen_width, screen_height]])
-
-        # self.observation_space = Dict (
-        #     {
-        #         "score": Discrete(self.game.max_score+1),
-        #         "lives": Discrete(self.game.lives),
-        #         "agent": Discrete(screen_width),
-        #         "aliens": Box(low=low_aliens, high=high_aliens, shape=(36, 3), dtype=np.uint8),
-        #         "bosses": Box(low=low_bosses, high=high_bosses, shape=(4, 2), dtype=np.uint8),
-        #         "bullets": Box(low=low_bullets, high=high_bullets, shape=(15,2), dtype=np.uint8)
-        #     }
-        # )
-        
 
     def init_render(self):
         pygame.init()
@@ -87,6 +55,7 @@ class CustomEnv(gym.Env):
 
     def reset(self):
         self.duration = 0
+        self.kills = 0
         self.init_render()
         self.game = Game(screen_width, screen_height)
         return self.get_obs()
@@ -99,7 +68,7 @@ class CustomEnv(gym.Env):
         self.duration += 1
 
 
-        self.clock.tick(100000)
+        self.clock.tick(30)
         pygame.display.flip()
 
         done = self.game.finished
@@ -107,18 +76,25 @@ class CustomEnv(gym.Env):
 
         ### Calculate reward
         if not done:
-            reward = 1
-            if change == 1:
+            reward = 0
+            if change[0] == 1:
                 #Extra reward for killing an enemy
-                reward = 100
-            elif change == 2:
+                reward = change[1]
+                # reward = 5
+                # self.kills += 1
+            elif change[0] == 2:
                 #Extra reward for hitting a boss
-                reward = 20
-            if change == 3:
+                reward = change[1]
+                # reward = 1
+            if change[0] == 3:
                 #Penalty for losing a live
                 reward = -1000
         else:
-            reward = self.game.score + self.game.lives*500
+            if self.game.lives <= 0:
+                reward = -1000
+            else:
+                reward = 0
+            # reward = self.game.score + self.game.lives*500
 
         #Observation
         observation = self.get_obs()
@@ -127,9 +103,16 @@ class CustomEnv(gym.Env):
     
     def get_obs(self):
         rgb = pygame.surfarray.array3d(self.screen)
-        return rgb
+        img_rgb = Image.fromarray(rgb)
+        img_gray = img_rgb.convert('L')
+        img_gray_array = np.array(img_gray)
+        img_gray_resize = img_as_ubyte(transform.resize(img_gray_array, (150, 150)))
+        # img_gray.save("testgrey2.png")
+        img_test = Image.fromarray(img_gray_resize)
+        img_test.save("test_resize.png")
+        
+        final_obs = img_gray_resize.reshape(img_gray_resize.shape + (1,))
+        return final_obs
 
     def render(self):
-        # self.screen.fill("black")
-        # self.game.run(self.screen)
         pass

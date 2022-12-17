@@ -32,7 +32,7 @@ class Game:
         self.screen_height = screen_height
         self.finished = False
         self.max_score = 3880
-        self.change = 0
+        self.change = (0, 0)
 
     def alien_setup(self, rows, cols, x_distance = 32, y_distance = 26):
         for row_index in range(rows):
@@ -67,11 +67,11 @@ class Game:
     def alien_shoot(self):
         if self.aliens.sprites():
             random_alien = choice(self.aliens.sprites())
-            bullet_sprite = Bullet(random_alien.rect.center, 8, self.screen_height, self.ship.sprite.rect.centerx, self.ship.sprite.rect.centery)
+            bullet_sprite = Bullet(random_alien.rect.center, 8, self.screen_height, self.ship.sprite.rect.centerx, self.ship.sprite.rect.centery, "alien")
             self.alien_bullets.add(bullet_sprite)
         if self.bosses.sprites():
             random_boss = choice(self.bosses.sprites())
-            bullet_sprite = Bullet(random_boss.rect.center, 8, self.screen_height, self.ship.sprite.rect.centerx, self.ship.sprite.rect.centery)
+            bullet_sprite = Bullet(random_boss.rect.center, 8, self.screen_height, self.ship.sprite.rect.centerx, self.ship.sprite.rect.centery, "alien")
             self.alien_bullets.add(bullet_sprite)
 
     def collisions(self):
@@ -83,7 +83,7 @@ class Game:
                     bullet.kill()
                     alien = aliens_hit[0]
                     self.score += alien.value
-                    self.change = 1
+                    self.change = (1, alien.value)
                     if self.score >= self.max_score:
                             self.finished = True
 
@@ -92,10 +92,10 @@ class Game:
                 if boss_hit:
                     bullet.kill()
                     boss = boss_hit[0]
-                    self.change = 2
+                    self.change = (2, 25)
                     if boss.lives == 1:
                         self.score += boss.value
-                        self.change = 1
+                        self.change = (1, boss.value)
                         if self.score >= self.max_score:
                             self.finished = True
                     else:
@@ -108,9 +108,11 @@ class Game:
                     for bullet_2 in self.alien_bullets:
                         bullet_2.kill()
                     self.lives -= 1
-                    self.change = 3
+                    self.change = (3, -1) 
                     if self.lives <= 0:
                         self.finished = True
+                    else:
+                        self.ship.sprite.rect.centerx = 224
         
         if self.aliens:
             for alien in self.aliens:
@@ -142,7 +144,7 @@ class Game:
 
 
     def step(self, action, duration):
-        self.change = 0
+        self.change = (0, 0)
         self.ship.update(action, duration)
         self.aliens.update()
         self.bosses.update()

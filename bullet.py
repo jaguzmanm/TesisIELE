@@ -2,9 +2,12 @@ import pygame
 import math
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, pos, speed, max_y, target_x, target_y):
+    def __init__(self, pos, speed, max_y, target_x, target_y, shooter):
         super().__init__()
-        self.image = pygame.image.load("graphics/bullet.png").convert_alpha()
+        if shooter == "ship":
+            self.image = pygame.image.load("graphics/bullet2.png").convert_alpha()
+        else:
+            self.image = pygame.image.load("graphics/bullet.png").convert_alpha()
         self.rect = self.image.get_rect(center = pos)
  
         self.x = pos[0]

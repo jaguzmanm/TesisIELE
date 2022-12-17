@@ -1,0 +1,35 @@
+Prueba 1:
+DQN
+Escala de grises
+Función de recompensa
+- Matar enemigo: puntuación del enemigo
+- Golpear jefe: 25
+- perder vida: -500
+- Final de episodio: 0
+
+Prueba 2:
+DQN
+Escala de grises
+Función de recompensa
+- Matar enemigo: 1
+- Golpear jefe: 0
+- perder vida: -100
+- Final de episodio: cantidad de enemigos matados durante el episodio
+
+Prueba 3:
+DQN
+Escala de grises
+Función de recompensa
+- Matar enemigo: 5
+- Golpear jefe: 1
+- perder vida: -100
+- Final de episodio: cantidad de enemigos matados durante el episodio
+
+Prueba 4:
+DQN - CnnPolicy
+Escala de grises
+Función de recompensa
+- Matar enemigo: puntaje del enemigo
+- Golpear jefe: 25
+- perder vida: -500
+- Final de episodio: 0
