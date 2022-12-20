@@ -68,7 +68,7 @@ class CustomEnv(gym.Env):
         self.duration += 1
 
 
-        self.clock.tick(30)
+        self.clock.tick(300000)
         pygame.display.flip()
 
         done = self.game.finished
@@ -93,7 +93,7 @@ class CustomEnv(gym.Env):
             if self.game.lives <= 0:
                 reward = -1000
             else:
-                reward = 0
+                reward = 1000
             # reward = self.game.score + self.game.lives*500
 
         #Observation
@@ -108,9 +108,6 @@ class CustomEnv(gym.Env):
         img_gray_array = np.array(img_gray)
         img_gray_resize = img_as_ubyte(transform.resize(img_gray_array, (150, 150)))
         # img_gray.save("testgrey2.png")
-        img_test = Image.fromarray(img_gray_resize)
-        img_test.save("test_resize.png")
-        
         final_obs = img_gray_resize.reshape(img_gray_resize.shape + (1,))
         return final_obs
 

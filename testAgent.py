@@ -8,7 +8,7 @@ from CustomEnv import CustomEnv
 
 env = CustomEnv()
 
-model = DQN.load("./models/prueba_5.zip")
+model = DQN.load("./models/prueba_6.zip")
 obs = env.reset()
 
 i = 0

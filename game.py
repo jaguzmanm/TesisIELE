@@ -77,29 +77,36 @@ class Game:
     def collisions(self):
         if self.ship.sprite.bullets:
             for bullet in self.ship.sprite.bullets:
+                alien_score = 0
                 #Bullet-Alien
                 aliens_hit = pygame.sprite.spritecollide(bullet, self.aliens, True)
                 if aliens_hit:
                     bullet.kill()
-                    alien = aliens_hit[0]
-                    self.score += alien.value
-                    self.change = (1, alien.value)
+                    for alien in aliens_hit:
+                        self.score += alien.value
+                        alien_score += alien.value
+                if alien_score > 0: 
+                    self.change = (1, alien_score)
                     if self.score >= self.max_score:
                             self.finished = True
 
                 #Bullet-Boss
+                boss_score = 0
                 boss_hit = pygame.sprite.spritecollide(bullet, self.bosses, True)
                 if boss_hit:
                     bullet.kill()
-                    boss = boss_hit[0]
-                    self.change = (2, 25)
-                    if boss.lives == 1:
-                        self.score += boss.value
-                        self.change = (1, boss.value)
+                    for boss in boss_hit:
+                        if boss.lives == 1:
+                            self.score += boss.value
+                            boss_score += boss.value
+                        else:
+                            self.bosses.add(Boss(1,boss.x, boss.y, boss.speed_x, boss.speed_y, boss.support))
+                    if boss_score > 0:
+                        self.change = (1, boss_score + alien_score)
                         if self.score >= self.max_score:
                             self.finished = True
                     else:
-                        self.bosses.add(Boss(1,boss.x, boss.y, boss.speed_x, boss.speed_y, boss.support))
+                        self.change = (2, 25)
         
         if self.alien_bullets:
             for bullet in self.alien_bullets:

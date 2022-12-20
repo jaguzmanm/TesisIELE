@@ -28,14 +28,16 @@ def get_action():
 
 env = CustomEnv()
 
-check_env(env)
-print("TO DO GUD")
+# check_env(env)
+# print("TO DO GUD")
 
-# model = DQN("MlpPolicy", env, buffer_size=15000, learning_starts=25000, exploration_final_eps=0.1, verbose=1, tensorboard_log="./results/prueba_5")
-# model.learn(total_timesteps=500000)
-# print("YA ENTRENO!!")
-# model.save("./models/prueba_5")
+# model = DQN("MlpPolicy", env, learning_starts=10000, exploration_final_eps=0.1, verbose=1, tensorboard_log="./results/prueba_6")
+model = DQN("MlpPolicy", env, learning_starts=50000, verbose=1, tensorboard_log="./results/prueba_6")
+model.learn(total_timesteps=6000000)
+print("YA ENTRENO!!")
+model.save("./models/prueba_6")
 
+# buffer_size=10000,
 
 # while True:
 #     for event in pygame.event.get():
