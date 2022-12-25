@@ -8,7 +8,7 @@ from CustomEnv import CustomEnv
 
 env = CustomEnv()
 
-model = DQN.load("./models/prueba_6.zip")
+model = DQN.load("./models/prueba_7.zip")
 obs = env.reset()
 
 i = 0
@@ -21,8 +21,10 @@ while i < 5:
     # time.sleep(0.05)
     # env.render()
     if done:
+        duracion = env.duration
         obs = env.reset()
         print("Recompensa obtenida para para el episodio de prueba " + str(i + 1) + " es: " + str(promReward))
+        print("La duracion del episodio de prueba " + str(i + 1) + " fue: " + str(duracion))
         i += 1
         promReward = 0
 pygame.quit()

@@ -44,7 +44,7 @@ class CustomEnv(gym.Env):
         #  - 5: RIGHT + SHOOT
         self.action_space = Discrete(3)
 
-        self.observation_space = Box(low=0, high=255, shape=(150, 150, 1), dtype=np.uint8)
+        self.observation_space = Box(low=0, high=255, shape=(120, 120, 1), dtype=np.uint8)
 
 
     def init_render(self):
@@ -71,7 +71,10 @@ class CustomEnv(gym.Env):
         self.clock.tick(300000)
         pygame.display.flip()
 
-        done = self.game.finished
+        if self.duration >= 1800:
+            done = True
+        else:
+            done = self.game.finished
         change = self.game.change
 
         ### Calculate reward
@@ -92,8 +95,10 @@ class CustomEnv(gym.Env):
         else:
             if self.game.lives <= 0:
                 reward = -1000
+            elif self.duration >= 1800:
+                reward = -500
             else:
-                reward = 1000
+                reward = 2000 - self.duration
             # reward = self.game.score + self.game.lives*500
 
         #Observation
@@ -106,7 +111,7 @@ class CustomEnv(gym.Env):
         img_rgb = Image.fromarray(rgb)
         img_gray = img_rgb.convert('L')
         img_gray_array = np.array(img_gray)
-        img_gray_resize = img_as_ubyte(transform.resize(img_gray_array, (150, 150)))
+        img_gray_resize = img_as_ubyte(transform.resize(img_gray_array, (120, 120)))
         # img_gray.save("testgrey2.png")
         final_obs = img_gray_resize.reshape(img_gray_resize.shape + (1,))
         return final_obs

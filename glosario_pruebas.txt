@@ -35,7 +35,16 @@ Función de recompensa
 - Final de episodio: 0
 
 Prueba 6:
-DQN - CnnPolicy
+DQN - MlpPolicy - 6M de steps
+Escala de grises - reescalado
+Función de recompensa
+- Matar enemigo: puntaje del enemigo
+- Golpear jefe: 25
+- perder vida: -1000
+- Final de episodio: 0 si se acaban las vidas 1000 si completa el nivel
+
+Prueba 7:
+DQN - MlpPolicy - 15M de steps
 Escala de grises - reescalado
 Función de recompensa
 - Matar enemigo: puntaje del enemigo
