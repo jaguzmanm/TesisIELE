@@ -71,7 +71,7 @@ class CustomEnv(gym.Env):
         self.clock.tick(300000)
         pygame.display.flip()
 
-        if self.duration >= 1800:
+        if self.duration >= 900:
             done = True
         else:
             done = self.game.finished
@@ -95,7 +95,7 @@ class CustomEnv(gym.Env):
         else:
             if self.game.lives <= 0:
                 reward = -1000
-            elif self.duration >= 1800:
+            elif self.duration >= 900:
                 reward = -500
             else:
                 reward = 2000 - self.duration

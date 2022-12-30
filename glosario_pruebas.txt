@@ -51,3 +51,16 @@ Función de recompensa
 - Golpear jefe: 25
 - perder vida: -1000
 - Final de episodio: 0 si se acaban las vidas 1000 si completa el nivel
+
+Prueba 8:
+DQN - CnnPolicy - 10M de steps
+Escala de grises - reescalado
+Maxima duracion episodio - 900 steps
+Función de recompensa
+- Matar enemigo: puntaje del enemigo
+- Golpear jefe: 25
+- perder vida: -1000
+- Final de episodio: 
+    - Se acaban las vidas: 0 
+    - Completa el nivel: 2000 - duracion del episodio
+    - se acaba el tiempo: -500

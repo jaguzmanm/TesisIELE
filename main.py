@@ -32,10 +32,10 @@ env = CustomEnv()
 # print("TO DO GUD")
 
 # model = DQN("MlpPolicy", env, learning_starts=10000, exploration_final_eps=0.1, verbose=1, tensorboard_log="./results/prueba_6")
-model = DQN("CnnPolicy", env, learning_starts=100000, verbose=1, tensorboard_log="./results/prueba_8")
-model.learn(total_timesteps=10000000)
+model = DQN("CnnPolicy", env, learning_starts=150000, verbose=1, tensorboard_log="./results/prueba_10")
+model.learn(total_timesteps=15000000)
 print("YA ENTRENO!!")
-model.save("./models/prueba_8")
+model.save("./models/prueba_10")
 
 # buffer_size=10000,
 
