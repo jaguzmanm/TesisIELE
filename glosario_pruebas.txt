@@ -55,6 +55,21 @@ Función de recompensa
 Prueba 8:
 DQN - CnnPolicy - 10M de steps
 Escala de grises - reescalado
+Maxima duracion episodio - 1800 steps
+Función de recompensa
+- Matar enemigo: puntaje del enemigo
+- Golpear jefe: 25
+- perder vida: -1000
+- Final de episodio: 
+    - Se acaban las vidas: 0 
+    - Completa el nivel: 2000 - duracion del episodio
+    - se acaba el tiempo: -500
+
+Prueba 9 - DIABLO
+
+Prueba 10:
+DQN - CnnPolicy - 15M de steps
+Escala de grises - reescalado
 Maxima duracion episodio - 900 steps
 Función de recompensa
 - Matar enemigo: puntaje del enemigo
@@ -64,3 +79,9 @@ Función de recompensa
     - Se acaban las vidas: 0 
     - Completa el nivel: 2000 - duracion del episodio
     - se acaba el tiempo: -500
+
+FALTA:
+- Probar diferentes niveles para el agente
+    - No se mueven 
+    - No disparan
+    - Disparan menos seguido

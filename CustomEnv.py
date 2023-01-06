@@ -31,7 +31,7 @@ def get_action():
 class CustomEnv(gym.Env):
     def __init__(self,env_config={}):
         self.duration = 0
-        self.kills = 0
+        self.final_state = -1
         self.init_render()
         self.game = Game(screen_width, screen_height)
 
@@ -55,7 +55,7 @@ class CustomEnv(gym.Env):
 
     def reset(self):
         self.duration = 0
-        self.kills = 0
+        self.final_state = -1
         self.init_render()
         self.game = Game(screen_width, screen_height)
         return self.get_obs()
@@ -71,7 +71,7 @@ class CustomEnv(gym.Env):
         self.clock.tick(300000)
         pygame.display.flip()
 
-        if self.duration >= 900:
+        if self.duration >= 1800:
             done = True
         else:
             done = self.game.finished
@@ -93,12 +93,18 @@ class CustomEnv(gym.Env):
                 #Penalty for losing a live
                 reward = -1000
         else:
+            #Se acabaron las vidas
             if self.game.lives <= 0:
                 reward = -1000
-            elif self.duration >= 900:
+                self.final_state = 1
+            #Se exedió el limite de tiempo
+            elif self.duration >= 1800:
                 reward = -500
+                self.final_state = 2
+            #Completó el nivel satisfactoriamente
             else:
                 reward = 2000 - self.duration
+                self.final_state = 3
             # reward = self.game.score + self.game.lives*500
 
         #Observation
