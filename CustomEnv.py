@@ -71,7 +71,7 @@ class CustomEnv(gym.Env):
         self.clock.tick(300000)
         pygame.display.flip()
 
-        if self.duration >= 900:
+        if self.duration >= 1050:
             done = True
         else:
             done = self.game.finished
@@ -98,7 +98,7 @@ class CustomEnv(gym.Env):
                 reward = -1000
                 self.final_state = 1
             #Se exedió el limite de tiempo
-            elif self.duration >= 900:
+            elif self.duration >= 1050:
                 reward = -500
                 self.final_state = 2
             #Completó el nivel satisfactoriamente
