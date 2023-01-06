@@ -4,11 +4,11 @@ from stable_baselines3 import DQN
 
 from CustomEnv import CustomEnv
 
-n_tests = 10
+n_tests = 1000
 df = pd.DataFrame(columns=("reward", "duration", "final_state"))
 
 env = CustomEnv()
-model = DQN.load("./models/prueba_8.zip")
+model = DQN.load("./models/dqn_galaga_final.zip")
 obs = env.reset()
 
 i = 0
@@ -32,5 +32,5 @@ while i < n_tests:
 
         i += 1
         total_reward = 0
-df.to_csv('./tests_results/test_file.csv') 
+df.to_csv('./tests_results/test_lvl_3.csv') 
 pygame.quit()
