@@ -10,7 +10,7 @@ n_tests = 1000
 
 model = DQN.load("./models/dqn_galaga_final.zip")
 
-for nivel in range(2,5):
+for nivel in range(1,4):
     env = CustomEnv([screen_width, screen_height, nivel])
     df = pd.DataFrame(columns=("attemp", "reward", "duration", "remaining_lives", "final_state"))
 
@@ -26,8 +26,8 @@ for nivel in range(2,5):
         if done:
             duracion = env.duration
             state = env.final_state
-            obs = env.reset()
             lives = env.game.lives
+            obs = env.reset()
             # print("Recompensa obtenida para para el episodio de prueba " + str(i + 1) + " es: " + str(total_reward))
             # print("La duracion del episodio de prueba " + str(i + 1) + " fue: " + str(duracion))
             # print("El intento de prueba " + str(i+1) + " termino en: " + str(state))

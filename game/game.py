@@ -8,7 +8,7 @@ from game.alien import Alien, Boss
 class Game:
     def __init__(self, screen_width, screen_height, lvl):
 
-        self.lvl = lvl
+        self.lvl = lvl + 1
 
         #Ship setup
         ship_sprite = Ship((screen_width//2, screen_height - 40), screen_width, screen_height, 6)
