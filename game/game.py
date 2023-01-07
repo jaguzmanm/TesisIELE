@@ -1,12 +1,15 @@
 from random import choice, random
-import pygame, sys
-from bullet import Bullet
+import pygame
 
-from ship import Ship
-from alien import Alien, Boss
+from game.bullet import Bullet
+from game.ship import Ship
+from game.alien import Alien, Boss
 
 class Game:
-    def __init__(self, screen_width, screen_height):
+    def __init__(self, screen_width, screen_height, lvl):
+
+        self.lvl = lvl
+
         #Ship setup
         ship_sprite = Ship((screen_width//2, screen_height - 40), screen_width, screen_height, 6)
         self.ship = pygame.sprite.GroupSingle(ship_sprite)
@@ -43,13 +46,21 @@ class Game:
                 speed_x = col_index - (cols//2)
                 if col_index >= 5:
                     speed_x += 1
+                
+                speed_y = row_index
+
+                if self.lvl == 1:
+                    speed_x = 0
+                    speed_y = 0
+                elif self.lvl == 4:
+                    speed_x *= 2
 
                 if 0 <= row_index <= 1:
                     if col_index != 0 and col_index != 9:
-                        alien_sprite = Alien("red" , x, y, speed_x ,row_index)
+                        alien_sprite = Alien("red" , x, y, speed_x ,speed_y, self.lvl)
                         self.aliens.add(alien_sprite)
                 else:
-                    alien_sprite = Alien("blue", x, y,speed_x,row_index)
+                    alien_sprite = Alien("blue", x, y,speed_x,speed_y, self.lvl)
                     self.aliens.add(alien_sprite)
     
     def boss_setup(self, x_distance = 32):
@@ -61,7 +72,12 @@ class Game:
             if i >= 2:
                 speed_x += 1
 
-            boss_sprite = Boss(2,x,y,speed_x, 0)
+            if self.lvl == 1:
+                speed_x = 0
+            elif self.lvl == 4:
+                speed_x *= 2
+
+            boss_sprite = Boss(2,x,y,speed_x, 0, lvl= self.lvl)
             self.bosses.add(boss_sprite)
 
     def alien_shoot(self):
@@ -134,7 +150,7 @@ class Game:
             screen.blit(self.live_surface, (x,self.screen_height-35))
     
     def show_score(self, screen):
-        score_surf = self.font.render(f"score: {self.score}", False, "white")
+        score_surf = self.font.render(f"score: {self.score} - Level {self.lvl}", False, "white")
         score_rect = score_surf.get_rect(topleft = (10, -10))
         screen.blit(score_surf, score_rect)
 
@@ -145,7 +161,9 @@ class Game:
 
         self.aliens.draw(screen)
         self.bosses.draw(screen)
-        self.alien_bullets.draw(screen)
+        if self.lvl == 3 or self.lvl == 4:
+            self.alien_bullets.draw(screen)
+
         self.show_lives(screen)
         self.show_score(screen)
 
@@ -155,9 +173,17 @@ class Game:
         self.ship.update(action, duration)
         self.aliens.update()
         self.bosses.update()
-        self.alien_bullets.update()
+
+        if self.lvl == 3 or self.lvl == 4:
+            self.alien_bullets.update()
 
         self.collisions()
+        
+        if self.lvl == 3:
+            if random() <= 0.025:
+                self.alien_shoot()
 
-        if random() <= 0.025:
-            self.alien_shoot()
+        elif self.lvl == 4:
+            if random() <= 0.05:
+                self.alien_shoot()
+                self.alien_shoot()

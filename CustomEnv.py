@@ -8,11 +8,7 @@ import pygame
 import numpy as np
 import gym
 
-
-from game import Game
-
-screen_width = 448
-screen_height = 586
+from game.game import Game
 
 def get_action():
     keys = pygame.key.get_pressed()
@@ -28,12 +24,17 @@ def get_action():
         shoot = 1
     return np.array([left, right, shoot])
 
+
+
 class CustomEnv(gym.Env):
     def __init__(self,env_config={}):
         self.duration = 0
         self.final_state = -1
+        self.screen_width = env_config[0]
+        self.screen_height = env_config[1]
+        self.lvl = env_config[2]
         self.init_render()
-        self.game = Game(screen_width, screen_height)
+        self.game = Game(self.screen_width, self.screen_height, self.lvl)
 
         ## ACTIONS:
         #  - 0: STAY
@@ -49,7 +50,7 @@ class CustomEnv(gym.Env):
 
     def init_render(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((screen_width, screen_height))
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         self.clock = pygame.time.Clock()
         
 
@@ -57,7 +58,7 @@ class CustomEnv(gym.Env):
         self.duration = 0
         self.final_state = -1
         self.init_render()
-        self.game = Game(screen_width, screen_height)
+        self.game = Game(self.screen_width, self.screen_height, self.lvl)
         return self.get_obs()
 
     def step(self, action):
@@ -68,7 +69,7 @@ class CustomEnv(gym.Env):
         self.duration += 1
 
 
-        self.clock.tick(300000)
+        self.clock.tick(30)
         pygame.display.flip()
 
         if self.duration >= 1050:

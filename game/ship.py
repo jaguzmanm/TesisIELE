@@ -1,5 +1,5 @@
 import pygame
-from bullet import Bullet
+from game.bullet import Bullet
 
 class Ship(pygame.sprite.Sprite):
     def __init__(self, pos, limit_x, limit_y, speed):

@@ -2,11 +2,14 @@ from turtle import speed
 import pygame
 
 class Alien(pygame.sprite.Sprite):
-    def __init__(self, color, x, y, speed_x, speed_y):
+    def __init__(self, color, x, y, speed_x, speed_y, lvl):
         super().__init__()
         
         self.support = 69
-        self.speed_support = -5
+        if lvl == 4:
+            self.speed_support = -10
+        else:
+            self.speed_support = -5
 
         path = "graphics/" + color + ".png"
         self.image = pygame.image.load(path).convert_alpha()
@@ -34,11 +37,14 @@ class Alien(pygame.sprite.Sprite):
 
 
 class Boss(pygame.sprite.Sprite):
-    def __init__(self, lives, x, y, speed_x, speed_y, support = 69):
+    def __init__(self, lives, x, y, speed_x, speed_y, lvl = 3):
         super().__init__()
 
-        self.support = support
-        self.speed_support = -5
+        self.support = 69
+        if lvl == 4:
+            self.speed_support = -10
+        else:
+            self.speed_support = -5
 
         path = "graphics/boss" + str(lives) + ".png"
         self.image = pygame.image.load(path).convert_alpha()
