@@ -6,11 +6,11 @@ from CustomEnv import CustomEnv
 
 screen_width = 448
 screen_height = 586
-n_tests = 1
+n_tests = 1000
 
 model = DQN.load("./models/dqn_galaga_final.zip")
 
-for nivel in range(1,5):
+for nivel in range(2,5):
     env = CustomEnv([screen_width, screen_height, nivel])
     df = pd.DataFrame(columns=("attemp", "reward", "duration", "remaining_lives", "final_state"))
 
