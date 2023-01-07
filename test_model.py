@@ -10,7 +10,7 @@ n_tests = 1000
 
 model = DQN.load("./models/dqn_galaga_final.zip")
 
-for nivel in range(1,4):
+for nivel in range(2,4):
     env = CustomEnv([screen_width, screen_height, nivel])
     df = pd.DataFrame(columns=("attemp", "reward", "duration", "remaining_lives", "final_state"))
 
@@ -34,6 +34,7 @@ for nivel in range(1,4):
 
             i += 1
             test_sumary = [i, total_reward, duracion, lives, state]
+            print(test_sumary)
             df.loc[len(df)] = test_sumary 
 
             total_reward = 0

@@ -180,10 +180,9 @@ class Game:
         self.collisions()
         
         if self.lvl == 3:
-            if random() <= 0.025:
+            if random() <= 0.015:
                 self.alien_shoot()
 
         elif self.lvl == 4:
             if random() <= 0.05:
-                self.alien_shoot()
                 self.alien_shoot()
