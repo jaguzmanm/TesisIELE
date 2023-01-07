@@ -12,7 +12,7 @@ model = DQN.load("./models/dqn_galaga_final.zip")
 
 for nivel in range(1,4):
     env = CustomEnv([screen_width, screen_height, nivel])
-    df = pd.DataFrame(columns=("attemp", "reward", "duration", "remaining_lives", "final_state"))
+    df = pd.DataFrame(columns=("reward", "duration", "remaining_lives", "final_state"))
 
     obs = env.reset()
     i = 0
@@ -37,7 +37,7 @@ for nivel in range(1,4):
             # print("El intento de prueba " + str(i+1) + " termino en: " + str(state))
 
             i += 1
-            test_sumary = [i, total_reward, duracion, lives, state]
+            test_sumary = [total_reward, duracion, lives, state]
             df.loc[len(df)] = test_sumary 
 
             total_reward = 0
