@@ -17,7 +17,7 @@ def get_action():
 
 screen_width = 448
 screen_height = 586
-nivel = 4
+nivel = 3
 
 env = CustomEnv([screen_width, screen_height, nivel])
 

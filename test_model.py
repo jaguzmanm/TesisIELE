@@ -6,40 +6,39 @@ from CustomEnv import CustomEnv
 
 screen_width = 448
 screen_height = 586
-n_tests = 1000
+n_tests = 2000
 
 model = DQN.load("./models/dqn_galaga_final.zip")
 
-for nivel in range(1,4):
-    env = CustomEnv([screen_width, screen_height, nivel])
-    df = pd.DataFrame(columns=("reward", "duration", "remaining_lives", "final_state"))
+# for nivel in range(1,4):
+env = CustomEnv([screen_width, screen_height, nivel])
+df = pd.DataFrame(columns=("reward", "duration", "remaining_lives", "final_state"))
 
-    obs = env.reset()
-    i = 0
-    total_reward = 0
+obs = env.reset()
+i = 0
+total_reward = 0
 
-    if nivel > 1:
-        n_tests = 2000
+nivel = 3
 
-    while i < n_tests:
-        action, _states = model.predict(obs, deterministic=True)
-        obs, reward, done, info = env.step(action)
-        
-        total_reward += float(reward)
+while i < n_tests:
+    action, _states = model.predict(obs, deterministic=True)
+    obs, reward, done, info = env.step(action)
+    
+    total_reward += float(reward)
 
-        if done:
-            duracion = env.duration
-            state = env.final_state
-            lives = env.game.lives
-            obs = env.reset()
-            # print("Recompensa obtenida para para el episodio de prueba " + str(i + 1) + " es: " + str(total_reward))
-            # print("La duracion del episodio de prueba " + str(i + 1) + " fue: " + str(duracion))
-            # print("El intento de prueba " + str(i+1) + " termino en: " + str(state))
+    if done:
+        duracion = env.duration
+        state = env.final_state
+        lives = env.game.lives
+        obs = env.reset()
+        # print("Recompensa obtenida para para el episodio de prueba " + str(i + 1) + " es: " + str(total_reward))
+        # print("La duracion del episodio de prueba " + str(i + 1) + " fue: " + str(duracion))
+        # print("El intento de prueba " + str(i+1) + " termino en: " + str(state))
 
-            i += 1
-            test_sumary = [total_reward, duracion, lives, state]
-            df.loc[len(df)] = test_sumary 
+        i += 1
+        test_sumary = [total_reward, duracion, lives, state]
+        df.loc[len(df)] = test_sumary 
 
-            total_reward = 0
+        total_reward = 0
     df.to_csv('./tests_results/test_lvl_{}.csv'.format(nivel)) 
     pygame.quit()

@@ -8,7 +8,7 @@ from game.alien import Alien, Boss
 class Game:
     def __init__(self, screen_width, screen_height, lvl):
 
-        self.lvl = lvl + 1
+        self.lvl = lvl
 
         #Ship setup
         ship_sprite = Ship((screen_width//2, screen_height - 40), screen_width, screen_height, 6)
@@ -179,8 +179,12 @@ class Game:
 
         self.collisions()
         
-        if self.lvl == 3:
+        if self.lvl == 2:
             if random() <= 0.01:
+                self.alien_shoot()
+
+        elif self.lvl == 3:
+            if random() <= 0.02:
                 self.alien_shoot()
 
         elif self.lvl == 4:
