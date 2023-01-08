@@ -8,6 +8,8 @@ screen_width = 448
 screen_height = 586
 n_tests = 2000
 
+nivel = 3
+
 model = DQN.load("./models/dqn_galaga_final.zip")
 
 # for nivel in range(1,4):
@@ -18,7 +20,6 @@ obs = env.reset()
 i = 0
 total_reward = 0
 
-nivel = 3
 
 while i < n_tests:
     action, _states = model.predict(obs, deterministic=True)
@@ -40,5 +41,5 @@ while i < n_tests:
         df.loc[len(df)] = test_sumary 
 
         total_reward = 0
-    df.to_csv('./tests_results/test_lvl_{}.csv'.format(nivel)) 
-    pygame.quit()
+df.to_csv('./tests_results/test_lvl_{}.csv'.format(nivel)) 
+pygame.quit()
