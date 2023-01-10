@@ -39,5 +39,6 @@ Dirigirse a la [pagina oficial de Python](https://www.python.org/), en la pesta√
     python main.py
  
 #### Vizualizar resultados del entrenamiento en TensorBoard
-Se debe ejecutar el comando en consola:
+Se debe ejecutar el comando en consola:\
+
     tensorboard dev upload --logdir ./results/{nombre_modelo}  --name "{Titulo}" --description "{Descripcion}"
