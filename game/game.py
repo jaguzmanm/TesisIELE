@@ -49,10 +49,7 @@ class Game:
                 
                 speed_y = row_index
 
-                if self.lvl == 1:
-                    speed_x = 0
-                    speed_y = 0
-                elif self.lvl == 4:
+                if self.lvl == 4:
                     speed_x *= 2
 
                 if 0 <= row_index <= 1:
@@ -72,9 +69,7 @@ class Game:
             if i >= 2:
                 speed_x += 1
 
-            if self.lvl == 1:
-                speed_x = 0
-            elif self.lvl == 4:
+            if self.lvl == 4:
                 speed_x *= 2
 
             boss_sprite = Boss(2,x,y,speed_x, 0, lvl= self.lvl)

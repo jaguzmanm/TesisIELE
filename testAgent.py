@@ -6,9 +6,14 @@ import matplotlib.pyplot as plt
 
 from CustomEnv import CustomEnv
 
-env = CustomEnv()
 
-model = DQN.load("./models/prueba_8.zip")
+model = DQN.load("./models/dqn_galaga_final.zip")
+
+nivel = 1
+screen_width = 448
+screen_height = 586
+
+env = CustomEnv([screen_width, screen_height, nivel])
 obs = env.reset()
 
 i = 0
