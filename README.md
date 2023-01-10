@@ -27,7 +27,7 @@ Dirigirse a la [pagina oficial de Python](https://www.python.org/), en la pesta√
     pip install virtualenv
     
 #### Crear un entrono virtual 
-    virtualenv env
+    python -m venv "env"
     
 #### Activar el entorno virtual
     env\Scripts\activate.bat
