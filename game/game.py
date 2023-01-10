@@ -131,6 +131,8 @@ class Game:
                         self.finished = True
                     else:
                         self.ship.sprite.rect.centerx = 224
+                    break
+                
         
         if self.aliens:
             for alien in self.aliens:
@@ -145,7 +147,7 @@ class Game:
             screen.blit(self.live_surface, (x,self.screen_height-35))
     
     def show_score(self, screen):
-        score_surf = self.font.render(f"score: {self.score}", False, "white")
+        score_surf = self.font.render(f"score: {self.score} - nivel {self.lvl}", False, "white")
         score_rect = score_surf.get_rect(topleft = (10, -10))
         screen.blit(score_surf, score_rect)
 
@@ -156,7 +158,7 @@ class Game:
 
         self.aliens.draw(screen)
         self.bosses.draw(screen)
-        if self.lvl == 3 or self.lvl == 4:
+        if self.lvl == 3 or self.lvl == 4 or self.lvl == 2:
             self.alien_bullets.draw(screen)
 
         self.show_lives(screen)
@@ -169,7 +171,7 @@ class Game:
         self.aliens.update()
         self.bosses.update()
 
-        if self.lvl == 3 or self.lvl == 4:
+        if self.lvl == 3 or self.lvl == 4 or self.lvl == 2:
             self.alien_bullets.update()
 
         self.collisions()

@@ -36,13 +36,12 @@ class CustomEnv(gym.Env):
         self.init_render()
         self.game = Game(self.screen_width, self.screen_height, self.lvl)
 
+        self.fps = env_config[3]
+
         ## ACTIONS:
         #  - 0: STAY
         #  - 1: LEFT
         #  - 2: RIGHT
-        #  - 3: SHOOT
-        #  - 4: LEFT + SHOOT
-        #  - 5: RIGHT + SHOOT
         self.action_space = Discrete(3)
 
         self.observation_space = Box(low=0, high=255, shape=(120, 120, 1), dtype=np.uint8)
@@ -69,7 +68,7 @@ class CustomEnv(gym.Env):
         self.duration += 1
 
 
-        self.clock.tick(300000)
+        self.clock.tick(self.fps)
         pygame.display.flip()
 
         if self.duration >= 1200:
@@ -119,7 +118,6 @@ class CustomEnv(gym.Env):
         img_gray = img_rgb.convert('L')
         img_gray_array = np.array(img_gray)
         img_gray_resize = img_as_ubyte(transform.resize(img_gray_array, (120, 120)))
-        # img_gray.save("testgrey2.png")
         final_obs = img_gray_resize.reshape(img_gray_resize.shape + (1,))
         return final_obs
 

@@ -21,20 +21,6 @@ class Ship(pygame.sprite.Sprite):
             self.rect.x -= self.speed
         elif action == 2:
             self.rect.x += self.speed
-        # elif action == 3 and self.ready:
-        #     self.shoot()
-        #     self.ready = False
-        #     self.bullet_time = duration
-        # elif action == 4 and self.ready:
-        #     self.rect.x -= self.speed
-        #     self.shoot()
-        #     self.ready = False
-        #     self.bullet_time = duration
-        # elif action == 5 and self.ready:
-        #     self.rect.x += self.speed
-        #     self.shoot()
-        #     self.ready = False
-        #     self.bullet_time = duration
     
     def shoot(self, duration):
         if self.ready:
